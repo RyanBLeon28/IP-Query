@@ -1,0 +1,35 @@
+.card {
+  background: #1e1e1e;
+  color: #fff;
+  border-radius: 12px;
+  padding: 16px;
+  margin: 20px 0;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.badge {
+  background: #ff6600;
+  color: white;
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 12px;
+}
+
+.granularity-select {
+  margin: 10px 0 20px;
+}
+
+.granularity-select select {
+  background: #111;
+  color: #fff;
+  border: 1px solid #ff6600;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}

@@ -55,7 +55,7 @@ const Chart = () => {
     <div className="card">
       <div className="card-header">
         <h2>Gráficos</h2>
-        <span className="badge">Acessos ⬇</span>
+        {/* <span className="badge">Acessos ⬇</span> */}
       </div>
 
       <div className="granularity-select">

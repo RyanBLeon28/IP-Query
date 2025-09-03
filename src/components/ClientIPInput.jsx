@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Check } from "lucide-react";
+import { IPInfo } from "../requests/IPInfos";
 
 export default function ClientIPInput() {
 
@@ -19,7 +20,21 @@ export default function ClientIPInput() {
   useEffect(() => {
     if (submitted) {
       const isIP = /^(\d{1,3}\.){3}\d{1,3}$/.test(value);
-      console.log("Valor final:", value, isIP ? "(IP)" : "(DNS)");
+      console.log("DOMINIO:", value, isIP ? "(IP)" : "(DNS)");
+
+      IPInfo(value)
+        .then(infos => {
+          if (infos) {
+            console.log('Informações do IP:', infos);
+            console.log(`País: ${infos.country}`);
+            console.log(`Cidade: ${infos.city}`);
+            console.log(`Organização (ISP): ${infos.org}`);
+          } else {
+            console.log('error in request.');
+          }
+        });
+
+
       setSubmitted(false);
     }
   }, [submitted, value]);

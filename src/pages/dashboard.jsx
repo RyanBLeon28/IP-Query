@@ -6,8 +6,19 @@ import ClientIPInput from "../components/ClientIPInput";
 import Chart from "../components/Chart";
 
 export default function Dashboard() {
+  // Estado para armazenar a posição do marcador [latitude, longitude]
+  const [markerPosition, setMarkerPosition] = useState(null);
+  
+  // Função que será chamada pelo IpInput quando uma localização for encontrada
+  const handleLocationFound = (coords) => {
+    // coords será um array como [40.7128, -74.0060]
+    setMarkerPosition(coords);
+  };
+
   const fileInputRef = useRef(null);
   const [monitoredIps, setMonitoredIps] = useState([]);
+  const [suspectsIps, setSuspectsIps] = useState([]);
+
 
   const handleClick = () => {
     fileInputRef.current.click();
@@ -63,25 +74,26 @@ export default function Dashboard() {
       <main>
         <aside>
           <div className="flex gap-2">
-            <ClientIPInput/>
-
-            <div className="block cursor-pointer" onClick={handleClick}>
-              <span>IPs</span>
-              <Folder />
-            </div>
-            <input
-              type="file"
-              ref={fileInputRef}
-              onChange={handleFileChange}
-              accept=".txt"
-              style={{ display: "none" }}
-            />
+            <ClientIPInput onLocationFound={handleLocationFound}/>
           </div>
 
           <div className="list-container">
-            <h2>IPs Monitorados:</h2>
+            <div className="header-list">
+              <h2>IPs Monitorados:</h2>
+              <p>{monitoredIps.length}</p>
+              <div className="block cursor-pointer" onClick={handleClick}>
+                <span>IPs</span>
+                <Folder />
+              </div>
+              <input
+                type="file"
+                ref={fileInputRef}
+                onChange={handleFileChange}
+                accept=".txt"
+                style={{ display: "none" }}
+              />
+            </div>
             <ul>
-              {/* O mapeamento da lista de IPs é feito aqui, usando o estado 'monitoredIps'. */}
               {monitoredIps.length > 0 ? (
                 monitoredIps.map((ip, index) => (
                   <li key={index}>{ip}</li>
@@ -95,25 +107,30 @@ export default function Dashboard() {
           <div className="list-container">
             <h2>IPs Suspeitos:</h2>
             <ul>
-              <li>192.168.0.1 -------</li>
-              <li>192.168.0.1 -------</li>
-              <li>192.168.0.1 -------</li>
-              <li>192.168.0.1 -------</li>
-              <li>192.168.0.1 -------</li>
+              {suspectsIps.length > 0 ? (
+                suspectsIps.map((ip, index) => (
+                  <li key={index}>{ip}</li>
+                ))
+              ) : (
+                <li className="placeholder-text">Nenhum IP suspeito.</li>
+              )}
             </ul>
           </div>
         </aside>
 
         <section className="flex-1">
-          <Chart />
 
-          <div className="card">
+          {/* <div className="card"> */}
             <h2>Posições geográficas</h2>
             <div className="icon-center">
-              <WorldMap />
+              <WorldMap 
+                markerPosition={markerPosition}
+                monitoredIps={monitoredIps}
+              />
             </div>
-          </div>
+          {/* </div> */}
 
+          <Chart />
         </section>
       </main>
     </div>

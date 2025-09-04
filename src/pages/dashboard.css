@@ -115,7 +115,7 @@ section {
 /* Containers de listas */
 .list-container {
   background-color: #27272a;
-  padding: 1rem;
+  padding: 0.8rem;
   border-radius: 1rem;
   box-shadow: 0 4px 6px rgba(0,0,0,0.3);
   transition: transform 0.2s;
@@ -129,7 +129,14 @@ section {
 .list-container h2 {
   font-weight: 600;
   font-size: 1.125rem;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.2rem;
+}
+
+.header-list {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center ;
 }
 
 .list-container ul {
@@ -152,6 +159,8 @@ section {
   display: flex;
   flex-direction: column;
   flex: 1;
+  height: 300px;
+  /* max-width: 800px; */
 }
 
 .card:hover {
@@ -168,8 +177,15 @@ section {
   justify-content: center;
   align-items: center;
   flex: 1;
+  height: 100%;
+  width: 100%;
 }
 
+.card .icon-center .leaflet-container {
+  height: 100%;
+  width: 100%;
+  border-radius: 0.75rem; /* opcional, arredondar cantos */
+}
 .card .badge {
   background-color: #ea580c;
   padding: 0.25rem 0.5rem;

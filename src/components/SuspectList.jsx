@@ -1,46 +1,78 @@
-import React, { useEffect, useState } from "react";
+import React, {useState} from "react";
 import "./SuspectList.css"
-import { checkIp } from "../requests/AbuseIPsCheck";
 
-export default function SuspectsList({ monitoredIps }) {
-  const [suspectsIps, setSuspectsIps] = useState([]);
+export default function SuspectsList({ monitoredIps = [], suspectsIps = [], ipInfoMap = {}, loading }) {
+  const [sortField, setSortField] = useState("acessos"); 
+  const [sortOrder, setSortOrder] = useState("desc"); 
 
-  useEffect(() => {
-    const fetchSuspects = async () => {
-      if (monitoredIps.length === 0) return;
+  const handleSort = (field) => {
+    if (sortField === field) {
+      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+    } else {
+      setSortField(field);
+      setSortOrder("desc");
+    }
+  };
 
-      const results = [];
-      for (const ip of monitoredIps) {
-        const result = await checkIp(ip);
-        results.push(result);
-      }
+  const uniqueIps = Array.from(new Set(suspectsIps));
+  const sortedIps = uniqueIps.sort((a, b) => {
+    const infoA = ipInfoMap[a] || {};
+    const infoB = ipInfoMap[b] || {};
 
-      // Filtra apenas IPs com score alto
-      const suspects = results
-        .filter(r => r.score >= 80)
-        .map(r => r.ip);
-
-      setSuspectsIps(suspects);
-    };
-
-    fetchSuspects();
-  }, [monitoredIps]);
+    if (sortField === "acessos") {
+      return sortOrder === "asc"
+        ? (infoA.accessCount || 1) - (infoB.accessCount || 1)
+        : (infoB.accessCount || 1) - (infoA.accessCount || 1);
+    } else if (sortField === "pais") {
+      const countryA = (infoA.country || "").toUpperCase();
+      const countryB = (infoB.country || "").toUpperCase();
+      if (countryA < countryB) return sortOrder === "asc" ? -1 : 1;
+      if (countryA > countryB) return sortOrder === "asc" ? 1 : -1;
+      return 0;
+    }
+    return 0;
+  });
 
   return (
     <div className="list-container">
       <div className="header-suspects">
         <h2>IPs Abusivos:</h2>
-        <p>{suspectsIps.length}</p>
+        <p>{uniqueIps.length}</p>
       </div>
-      <ul>
-        {suspectsIps.length > 0 ? (
-          suspectsIps.map((ip, index) => (
-            <li key={index}>{ip}</li>
-          ))
-        ) : (
-          <li className="placeholder-text">Nenhum IP suspeito.</li>
-        )}
-      </ul>
+
+      {loading ? (
+        <p className="placeholder-text">Carregando...</p>
+      ) : sortedIps.length > 0 ? (
+        <div className="table-wrapper">
+          <table className="suspects-table">
+            <thead>
+              <tr>
+                <th>IP</th>
+                <th onClick={() => handleSort("acessos")} style={{ cursor: "pointer" }}>
+                  Acessos {sortField === "acessos" ? (sortOrder === "asc" ? "▲" : "▼") : ""}
+                </th>
+                <th onClick={() => handleSort("pais")} style={{ cursor: "pointer" }}>
+                  País {sortField === "pais" ? (sortOrder === "asc" ? "▲" : "▼") : ""}
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {sortedIps.map((ip, index) => {
+                const info = ipInfoMap[ip] || {};
+                return (
+                  <tr key={index}>
+                    <td>{ip}</td>
+                    <td>{info.accessCount || 1}</td>
+                    <td>{info.country || "Desconhecido"}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      ) : (
+        <p className="placeholder-text">Nenhum IP suspeito.</p>
+      )}
     </div>
   );
 }

@@ -4,7 +4,6 @@
   border-radius: 1rem;
   box-shadow: 0 4px 6px rgba(0,0,0,0.3);
   transition: transform 0.2s;
-
 }
 
 .list-container:hover {
@@ -17,19 +16,50 @@
   margin-bottom: 0.2rem;
 }
 
-.header-suspects{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-around;
+.header-suspects {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-left: 2%;
+  margin-right: 2%;
 }
 
-.list-container ul {
-  max-height: 250px;
-  overflow-y: auto;
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-  font-size: 0.875rem;
+/* --- área rolável apenas no tbody --- */
+.table-wrapper {
+  max-height: 350px;   
+  overflow-y: auto;     
+  border: 1px solid #ddd;
+  border-radius: 0.5rem;
+}
+
+.suspects-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.suspects-table th,
+.suspects-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.suspects-table th {
+  background-color: #0c0b0b;
+  color: #fff;
+  font-weight: bold;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+.suspects-table tr:nth-child(even) {
+  background-color: #5c5a5a;
+}
+
+.placeholder-text {
+  padding: 1rem;
+  color: #aaa;
+  text-align: center;
 }

@@ -3,7 +3,7 @@ import csv
 # Caminho do arquivo CSV da blacklist
 input_file = "blacklist_ips_05_09_2025.csv"
 # Caminho do arquivo TXT de saída
-output_file = "ips_selecionados.txt"
+output_file = "ips_blacklist_and_random.txt"
 
 # Escolha da linha inicial e final (0 = primeira linha de dados após o cabeçalho)
 start_line = int(input("Digite a linha inicial: "))

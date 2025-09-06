@@ -16,40 +16,43 @@ L.Icon.Default.mergeOptions({
     shadowUrl: markerShadow,
 });
 
-export default function WorldMap({ markerPosition, monitoredIps, filter}) {
-
+export default function WorldMap({ markerPosition, monitoredIps, suspectsIps, filter, ipInfoMap}) {
   const [countryAccess, setCountryAccess] = React.useState({});
 
   React.useEffect(() => {
-    const fetchAccessData = async () => {
-      const accessPerCountry = {};
+    if (!ipInfoMap || !Object.keys(ipInfoMap).length) return;
 
-      console.log("Request for IPs list");
-      for (const ip of monitoredIps) {
-        const info = await getIpInfo(ip);
-        if (info?.country) {
-          accessPerCountry[info.country] = (accessPerCountry[info.country] || 0) + 1;
-        }
-      }
+    let filteredIps = [];
 
-      setCountryAccess(accessPerCountry);
+    if (filter === "Todos") {
+      filteredIps = Object.keys(ipInfoMap); // todos únicos
+    } else if (filter === "Suspeitos") {
+      filteredIps = Array.from(new Set(suspectsIps));
+    } else if (filter === "Saudaveis") {
+      filteredIps = Object.keys(ipInfoMap).filter((ip) => !suspectsIps.includes(ip));
+    }
+
+    // For normalize countries names
+    const normalizeCountry = {
+      "United States": "United States of America"
     };
 
-    if (monitoredIps?.length) fetchAccessData();
-  }, [monitoredIps]);
+    const accessPerCountry = {};
+    for (const ip of filteredIps) {
+      const info = ipInfoMap[ip];
+      if (info?.country) {
+        const normalizedName = normalizeCountry[info.country] || info.country;
+        accessPerCountry[normalizedName] =
+          (accessPerCountry[normalizedName] || 0) + (info.accessCount || 1);
+      }
+    }
+
+    setCountryAccess(accessPerCountry);
+  }, [filter, monitoredIps, suspectsIps, ipInfoMap]);
 
   const values = Object.values(countryAccess);
   const minAccess = Math.min(...values, 0);
   const maxAccess = Math.max(...values, 1);
-
-  const getColor = (value) => {
-    if (isNaN(value) || value === 0) return "#d1d5db";
-    const ratio = (value - minAccess) / (maxAccess - minAccess);
-    const r = Math.round(34 + ratio * (220 - 34));
-    const g = Math.round(197 - ratio * (197 - 38));
-    const b = Math.round(94 - ratio * (94 - 38));
-    return `rgb(${r},${g},${b})`;
-  };
 
   const countryColors = {};
   Object.entries(countryAccess).forEach(([country, access]) => {
@@ -81,7 +84,7 @@ export default function WorldMap({ markerPosition, monitoredIps, filter}) {
 
   return (
     <MapContainer
-      style={{ height: "300px", width: "100%" }}
+      style={{ height: "100%", width: "100%" }}
       center={[20, 0]}
       zoom={1.8}
       scrollWheelZoom={true}

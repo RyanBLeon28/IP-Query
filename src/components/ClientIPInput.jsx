@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Search } from "lucide-react";
+import "./clientIPInput.css";
 import { IPInfo } from "../requests/IPInfos";
 import { checkDomainStatus } from "../requests/IPStatus";
 import { getIpInfo } from "../requests/GetIPInfo";
@@ -48,32 +49,27 @@ export default function ClientIPInput({onLocationFound}) {
   }, [submitted, value]);
 
   return (
-    <div className="flex items-center gap-1 bg-orange-600 px-2 py-2 rounded-full shadow w-full max-w-sm">
-      <input
-        type="text"
-        value={value}
-        onChange={handleChange}
-        onKeyDown={handleKeyDown}
-        onBlur={handleBlur}
-        placeholder="Digite seu IP ou DNS"
-        className="flex-1 bg-transparent outline-none text-white placeholder-white pl-2"
-      />
-      <button 
-        onClick={handleSubmit} 
-        className="
-          w-10 h-10                          // Define altura e largura iguais
-          flex items-center justify-center   // Centraliza o ícone dentro do botão
-          bg-orange-500                      // Cor de fundo inicial do botão
-          rounded-full                       // Deixa o botão perfeitamente redondo
-          text-white                         // Cor do ícone da lupa
-          hover:bg-orange-400                // Efeito ao passar o mouse
-          transition-colors                  // Suaviza a mudança de cor
-          focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-offset-2 // Estilo de foco
-          flex-shrink-0                      // Impede que o botão seja espremido
-        "
+    <div className="clientDiv">
+      <form
+        onSubmit={(e) => { e.preventDefault(); handleSubmit(); }}
+        className="flex items-center justify-end gap-1 bg-orange-600 px-2 py-2 rounded-full shadow w-full max-w-sm"
       >
-        <Search size={24} /> {/* <-- Ícone de lupa aqui */}
-      </button>
+        <input
+          type="text"
+          value={value}
+          onChange={handleChange}
+          onKeyDown={handleKeyDown}
+          onBlur={handleBlur}
+          placeholder="Digite seu IP ou DNS"
+          className="clientInput"
+        />
+        <button 
+          onClick={handleSubmit} 
+          className="clientButton"
+        >
+          <Search size={28} color='#fff'/>
+        </button>
+      </form>
     </div>
   );
 };

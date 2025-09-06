@@ -1,0 +1,56 @@
+.clientDiv{
+    display: flex;
+    width: 100%;
+    justify-content: end;
+}
+
+
+.clientForm {
+  display: flex;
+  align-items: center;       
+  justify-content: flex-end; 
+  gap: 0.25rem;              
+  padding: 0.5rem 0.5rem;   
+  border-radius: 9999px;     /* rounded-full */
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1),
+              0 1px 2px rgba(0,0,0,0.06); 
+  width: 100%;
+}
+
+.clientInput {
+  flex: 1;
+  background: transparent;
+  outline: none;
+  color: white;
+  padding-left: 0.5rem; /* pl-2 */
+}
+
+.clientInput::placeholder {
+  color: white;
+  opacity: 0.7;
+}
+
+.clientButton {
+    /* width: 60%; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9999px;     /* rounded-full */
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.clientButton:hover {
+  background-color: var(--primary-light); 
+}
+
+.clientButton:focus {
+  outline: none;   
+  box-shadow: none;
+  box-shadow: 0 0 0 2px rgba(255,165,0,0.7);
+}
+
+.clientButton svg {
+    display: block;
+    stroke: white;
+}

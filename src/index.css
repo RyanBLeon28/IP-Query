@@ -1,4 +1,14 @@
 :root {
+  --primary: #f97316;
+  --primary-light: #ea580c;
+  --primary-dark: #c2410c;
+  --background: #000000;
+  --surface: #1a1a1a;
+  --text: #ffffff;
+  --accent: #facc15;
+
+
+
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;

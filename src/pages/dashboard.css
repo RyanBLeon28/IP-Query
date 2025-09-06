@@ -60,15 +60,17 @@ html, body {
 .dashboard main {
   display: flex;
   flex-direction: column;
-  flex: 1;
   gap: 1rem;
   padding: 1rem;
   width: 100%;
+  flex: 1;
 }
 
 @media (min-width: 768px) {
   .dashboard main {
     flex-direction: row;
+    align-items: flex-start;
+    gap: 2rem;
   }
 }
 
@@ -140,13 +142,62 @@ section {
 }
 
 .list-container ul {
-    max-height: 250px;
+  max-height: 250px;
   overflow-y: auto;
   list-style: none;
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
   font-size: 0.875rem;
+}
+
+.map-container{
+  margin-top: 3%;
+}
+
+.map-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.filters {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.filters button {
+  padding: 0.25rem 0.75rem;
+  border-radius: 0.375rem; /* arredondamento semelhante a tailwind rounded */
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.filters button:hover {
+  opacity: 0.85;
+}
+
+.filters button.bg-blue-500 {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.filters button.bg-red-500 {
+  background-color: #ef4444;
+  color: white;
+}
+
+.filters button.bg-green-500 {
+  background-color: #22c55e;
+  color: white;
+}
+
+.filters button.bg-gray-200 {
+  background-color: #e5e7eb;
+  color: #111827;
 }
 
 /* Mapa e gráficos */

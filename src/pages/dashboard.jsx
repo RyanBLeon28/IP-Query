@@ -1,14 +1,16 @@
-import React, {useRef, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import { Menu, Folder, BarChart3, Globe2 } from "lucide-react";
 import "./dashboard.css";
 import WorldMap from "../components/WorldMap";
 import ClientIPInput from "../components/ClientIPInput";
+import SuspectsList from "../components/SuspectList";
 import Chart from "../components/Chart";
 
 export default function Dashboard() {
   // Estado para armazenar a posição do marcador [latitude, longitude]
   const [markerPosition, setMarkerPosition] = useState(null);
-  
+  const [filter, setFilter] = useState('todos');
+
   // Função que será chamada pelo IpInput quando uma localização for encontrada
   const handleLocationFound = (coords) => {
     // coords será um array como [40.7128, -74.0060]
@@ -59,6 +61,11 @@ export default function Dashboard() {
     reader.readAsText(file);
   };
 
+  useEffect(() => {
+    console.log("Chamar API de")
+  },[monitoredIps]);
+
+
   return (
     <div className="dashboard">
       <header>
@@ -72,11 +79,54 @@ export default function Dashboard() {
       </header>
 
       <main>
-        <aside>
-          <div className="flex gap-2">
-            <ClientIPInput onLocationFound={handleLocationFound}/>
+        <section className="flex gap-4 p-4">
+
+          <div className="map-container">
+            <div className="map-header">
+              <h2>Posição geográfica dos acessos</h2>
+              
+              <div className="filters">
+                <button
+                  className={filter === "Todos" ? "bg-gray-200" : "bg-gray-100"}
+                  onClick={() => setFilter("Todos")}
+                >
+                  Todos
+                </button>
+
+                <button
+                  className={filter === "Suspeitos" ? "bg-red-500" : "bg-gray-100"}
+                  onClick={() => setFilter("Suspeitos")}
+                >
+                  Suspeitos
+                </button>
+
+                <button
+                  className={filter === "Saudaveis" ? "bg-green-500" : "bg-gray-100"}
+                  onClick={() => setFilter("Saudaveis")}
+                >
+                  Saudáveis
+                </button>
+              </div>
+
+            </div>
+
+            <div className="icon-center">
+              <WorldMap 
+                markerPosition={markerPosition}
+                monitoredIps={monitoredIps}
+                filter={filter}
+              />
+            </div>
           </div>
 
+          <Chart />
+        </section>
+
+        <aside className="w-80 flex flex-col flex-shrink-0 space-y-4">
+          <ClientIPInput 
+          onLocationFound={handleLocationFound}
+          className="self-end w-full max-w-sm"
+          />
           <div className="list-container">
             <div className="header-list">
               <h2>IPs Monitorados:</h2>
@@ -104,34 +154,10 @@ export default function Dashboard() {
             </ul>
           </div>
 
-          <div className="list-container">
-            <h2>IPs Suspeitos:</h2>
-            <ul>
-              {suspectsIps.length > 0 ? (
-                suspectsIps.map((ip, index) => (
-                  <li key={index}>{ip}</li>
-                ))
-              ) : (
-                <li className="placeholder-text">Nenhum IP suspeito.</li>
-              )}
-            </ul>
-          </div>
+          <SuspectsList monitoredIps={monitoredIps}/>
         </aside>
 
-        <section className="flex-1">
-
-          {/* <div className="card"> */}
-            <h2>Posições geográficas</h2>
-            <div className="icon-center">
-              <WorldMap 
-                markerPosition={markerPosition}
-                monitoredIps={monitoredIps}
-              />
-            </div>
-          {/* </div> */}
-
-          <Chart />
-        </section>
+        
       </main>
     </div>
   );

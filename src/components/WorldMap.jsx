@@ -16,7 +16,7 @@ L.Icon.Default.mergeOptions({
     shadowUrl: markerShadow,
 });
 
-export default function WorldMap({ markerPosition, monitoredIps}) {
+export default function WorldMap({ markerPosition, monitoredIps, filter}) {
 
   const [countryAccess, setCountryAccess] = React.useState({});
 
@@ -27,7 +27,6 @@ export default function WorldMap({ markerPosition, monitoredIps}) {
       console.log("Request for IPs list");
       for (const ip of monitoredIps) {
         const info = await getIpInfo(ip);
-
         if (info?.country) {
           accessPerCountry[info.country] = (accessPerCountry[info.country] || 0) + 1;
         }
@@ -84,14 +83,15 @@ export default function WorldMap({ markerPosition, monitoredIps}) {
     <MapContainer
       style={{ height: "300px", width: "100%" }}
       center={[20, 0]}
-      zoom={2}
-      scrollWheelZoom={false}
+      zoom={1.8}
+      scrollWheelZoom={true}
     >
       <TileLayer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         attribution="&copy; OpenStreetMap contributors"
       />
       <GeoJSON
+        key={JSON.stringify(countryAccess)}
         data={countriesData}
         //style={countryStyle}
         onEachFeature={onEachCountry}

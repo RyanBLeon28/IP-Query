@@ -10,7 +10,12 @@ import {checkIp } from "../requests/AbuseIPsCheck"
 import { getIpInfo } from "../requests/GetIPInfo";
 
 export default function Dashboard() {
-  // Estado para armazenar a posição do marcador [latitude, longitude]
+  const fileInputRef = useRef(null);
+  const [monitoredIps, setMonitoredIps] = useState([]);
+  const [suspectsIps, setSuspectsIps] = useState([]);
+  const [ipInfoMap, setIpInfoMap] = useState({});
+  const [fileName, setFileName] = useState("");
+  const [loadingSuspects, setLoadingSuspects] = useState(false);
   const [markerPosition, setMarkerPosition] = useState(null);
   const [filter, setFilter] = useState("Todos");
 
@@ -20,12 +25,6 @@ export default function Dashboard() {
     setMarkerPosition(coords);
   };
 
-  const fileInputRef = useRef(null);
-  const [monitoredIps, setMonitoredIps] = useState([]);
-  const [suspectsIps, setSuspectsIps] = useState([]);
-  const [ipInfoMap, setIpInfoMap] = useState({});
-  const [fileName, setFileName] = useState("");
-  const [loadingSuspects, setLoadingSuspects] = useState(false);
 
   // -------------- Filter IP for map --------------
   useEffect(() => {

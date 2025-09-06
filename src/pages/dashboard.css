@@ -212,10 +212,8 @@ section {
   display: flex;
   flex-direction: column;
   flex: 1;
-  /* height: 500px; */
   height: 80%;
-  /* max-width: 800px; */
-}
+  }
 
 .card:hover {
   transform: scale(1.05);
@@ -253,7 +251,6 @@ section {
   color: #ea580c;
 }
 
-/* Flex helper */
 .flex {
   display: flex;
 }
@@ -262,7 +259,7 @@ section {
 .gap-4 { gap: 1rem; }
 
 .placeholder-text {
-  color: #9ca3af; /* Cor mais fraca */
+  color: #9ca3af; 
 }
 
 .fileName{
@@ -270,4 +267,33 @@ section {
   display: flex;
   justify-content: end;
   margin-right: 3%;
+}
+
+.map-container {
+  display: flex;
+  flex-direction: column;
+  height: 80vh;  
+  width: 100%;
+  max-width: 1200px;  
+  margin: 0 auto;  
+}
+
+.map-container .map-header {
+  margin-bottom: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.map-container .icon-center {
+  flex: 1;  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.map-container .icon-center .leaflet-container {
+  height: 100%;
+  width: 100%;
+  border-radius: 0.75rem; 
 }

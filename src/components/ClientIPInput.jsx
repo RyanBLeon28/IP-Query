@@ -52,7 +52,7 @@ export default function ClientIPInput({onLocationFound}) {
     <div className="clientDiv">
       <form
         onSubmit={(e) => { e.preventDefault(); handleSubmit(); }}
-        className="flex items-center justify-end gap-1 bg-orange-600 px-2 py-2 rounded-full shadow w-full max-w-sm"
+        className="clientForm"
       >
         <input
           type="text"

@@ -9,6 +9,7 @@ import {
   ResponsiveContainer,
   Label
 } from "recharts";
+import "./chart.css"
 
 const SORT_TYPES = {
   NONE: 'none',
@@ -56,52 +57,52 @@ const Chart = ({ data }) => {
   };
 
   return (
-    <div className=" card w-full bg-white shadow-md rounded-lg p-4">
-      <div className="border-b border-gray-200 pb-2 mb-2">
-        <h2 className="text-xl font-semibold text-gray-800">Acessos de IPs Suspeitos</h2>
+    <div className="chart-container">
+    <div className="chart-header">
+      <h2>Acessos de IPs Suspeitos</h2>
+      
+      <div className="chart-controls">
         
-        <div className="flex justify-between items-center mt-2">
-          
-          <div className="flex flex-row">
-            <div className="flex gap-2">
-              <button 
-                onClick={() => setSortOrder(SORT_TYPES.DESC)}
-                className={`px-2 py-1 rounded text-sm ${sortOrder === SORT_TYPES.DESC ? 'bg-blue-600 text-white font-bold' : 'bg-gray-200 text-gray-700'}`}
-              >
-                Mais Relevantes
-              </button>
-              <button 
-                onClick={() => setSortOrder(SORT_TYPES.ASC)}
-                className={`px-2 py-1 rounded text-sm ${sortOrder === SORT_TYPES.ASC ? 'bg-blue-600 text-white font-bold' : 'bg-gray-200 text-gray-700'}`}
-              >
-                Menos Relevantes
-              </button>
-            </div>  
-
-            <span className="text-sm text-gray-600 mb-1">Exibir: {porcentView}% dos dados</span>
-          </div>
-
-          <div className="flex flex-col items-end">
-            <div className="flex items-center gap-2">
-              <button 
-                onClick={handleDecreaseView}
-                disabled={porcentView <= MIN_PERCENT}
-                className="px-1 py-1 rounded text-sm border border-red-200 bg-gray-200 text-gray-700 disabled:opacity-50"
-              >
-                -
-              </button>
-              <button 
-                onClick={handleIncreaseView}
-                disabled={porcentView >= MAX_PERCENT}
-                className="px-1 py-1 rounded text-sm bg-gray-200 text-gray-700 disabled:opacity-50"
-              >
-                +
-              </button>
-            </div>
-          </div>
+        <div className="chart-controls-left">
+          <div className="chart-sort-buttons">
+            <button 
+              onClick={() => setSortOrder(SORT_TYPES.DESC)}
+              className={`chart-button ${sortOrder === SORT_TYPES.DESC ? 'active-state' : 'default-state'}`}
+            >
+              Mais Relevantes
+            </button>
+            <button 
+              onClick={() => setSortOrder(SORT_TYPES.ASC)}
+              className={`chart-button ${sortOrder === SORT_TYPES.ASC ? 'active-state' : 'default-state'}`}
+            >
+              Menos Relevantes
+            </button>
+          </div>  
 
         </div>
+
+        <div className="chart-controls-right">
+          <span className="chart-view-percent">Exibindo: {porcentView}% dos dados</span>
+          <div className="chart-zoom-buttons">
+            <button 
+              onClick={handleDecreaseView}
+              disabled={porcentView <= MIN_PERCENT}
+              className="chart-zoom-button decrease-button" 
+            >
+              -
+            </button>
+            <button 
+              onClick={handleIncreaseView}
+              disabled={porcentView >= MAX_PERCENT}
+              className="chart-zoom-button"
+            >
+              +
+            </button>
+          </div>
+        </div>
+
       </div>
+    </div>
 
       <div className="w-full mt-4" style={{ height: 340 }}>
         <ResponsiveContainer>

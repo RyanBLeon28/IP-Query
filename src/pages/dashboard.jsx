@@ -169,8 +169,7 @@ export default function Dashboard() {
       </header>
 
       <main>
-        <section className="flex flex-col gap-4 p-4 w-full">
-
+        <section>
           <div className="map-container">
             <div className="map-header">
               <h2>Posição geográfica dos acessos</h2>
@@ -215,10 +214,10 @@ export default function Dashboard() {
           <Chart data={chartData} />
         </section>
 
-        <aside className="w-80 flex flex-col flex-shrink-0 space-y-4">
+        <aside>
           <ClientIPInput 
-          onLocationFound={handleLocationFound}
-          className="self-end w-full max-w-sm"
+            onLocationFound={handleLocationFound}
+            className="self-end w-full max-w-sm"
           />
           
           <div className="list-container">

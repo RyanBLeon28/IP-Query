@@ -66,32 +66,11 @@ html, body {
   flex: 1;
 }
 
-.dashboard main > section,
-.dashboard main > aside {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  
-  flex-basis: 100%;
-}
-
 @media (min-width: 768px) {
-  
-  /* O main fica lado a lado */
   .dashboard main {
     flex-direction: row;
     align-items: flex-start;
     gap: 2rem;
-  }
-
-  /* Section ocupa 3/4 */
-  .dashboard main > section {
-    flex-basis: 70%;
-  }
-
-  /* Aside ocupa 1/4 */
-  .dashboard main > aside {
-    flex-basis: 30%;
   }
 }
 
@@ -107,6 +86,15 @@ aside {
   aside {
     flex: 0 0 33.3333%; /* desktop ocupa 1/3 */
   }
+}
+
+/* Right column */
+section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  flex: 1; /* ocupa o restante do espaço */
+  width: 100%;
 }
 
 /* Blocos de IP */
@@ -142,7 +130,7 @@ aside {
 
 .list-container h2 {
   font-weight: 600;
-  font-size: 1rem;
+  font-size: 1.125rem;
   margin-bottom: 0.2rem;
 }
 
@@ -153,13 +141,6 @@ aside {
   margin-left: 2%;
   margin-right: 2%;
   align-items: center ;
-}
-
-.header-list .block {
-  font-size: 0.765rem; 
-  display: flex;    
-  align-items: center;
-  gap: 0.15rem;    
 }
 
 .list-container ul {
@@ -270,6 +251,9 @@ aside {
   color: #ea580c;
 }
 
+.flex {
+  display: flex;
+}
 
 .gap-2 { gap: 0.5rem; }
 .gap-4 { gap: 1rem; }
@@ -312,4 +296,128 @@ aside {
   height: 100%;
   width: 100%;
   border-radius: 0.75rem; 
+}
+
+
+
+
+/* --- Layout Principal da Página de Gráficos --- */
+.graphics-main {
+  display: grid;
+  /* Cria um layout de 2 colunas */
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  padding: 20px;
+  background-color: #f4f7f6; /* Um fundo leve para a área de conteúdo */
+}
+
+/* --- Estilo de Card Genérico --- */
+.card {
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  /* Faz os cards principais (Gráfico, Tabela) ocuparem a largura total */
+  grid-column: 1 / -1;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.card-header h2 {
+  margin: 0;
+  font-size: 1.25rem;
+  color: #333;
+}
+
+/* --- Container dos Cartões de Estatística --- */
+.stats-cards {
+  /* Este container ocupa a largura total */
+  grid-column: 1 / -1;
+  /* E se divide em 2 colunas internas */
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.stat-card {
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 25px 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
+}
+
+.stat-card svg {
+  width: 32px;
+  height: 32px;
+  color: #ff6600; /* Cor laranja principal */
+}
+
+.stat-card h3 {
+  margin: 0;
+  font-size: 2.25rem;
+  color: #333;
+  font-weight: 600;
+}
+
+.stat-card p {
+  margin: 0;
+  color: #777;
+  font-size: 0.9rem;
+}
+
+/* Cor especial para o card de alerta */
+.stat-card.suspicious svg {
+  color: #e63946; /* Vermelho alerta */
+}
+.stat-card.suspicious h3 {
+  color: #e63946;
+}
+
+/* --- Lista de Suspeitos --- */
+.suspect-list-container {
+  max-height: 250px;
+  overflow-y: auto; /* Adiciona scroll se a lista for longa */
+}
+
+.suspect-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.suspect-list li {
+  padding: 12px 10px;
+  border-bottom: 1px solid #f0f0f0;
+  font-family: "Courier New", Courier, monospace;
+  font-size: 1rem;
+  color: #555;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.suspect-list li:last-child {
+  border-bottom: none;
+}
+
+.suspect-list li:hover {
+  background-color: #f9f9f9;
 }

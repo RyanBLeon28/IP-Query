@@ -1,0 +1,153 @@
+/* --- O Container Principal do Gráfico --- */
+/* Traduzido de: card w-full bg-white shadow-md rounded-lg p-4 */
+.chart-container {
+  background-color: #0e0c0c; /* bg-white */
+  color: #1f2937; /* Cor do texto base (text-gray-800) */
+  width: 100%; /* w-full */
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1); /* shadow-md */
+  border-radius: 0.5rem; /* rounded-lg */
+  padding: 1rem; /* p-4 */
+  
+  /* Você já tinha uma classe .card em dashboard.css, 
+     mas ela tinha fundo escuro. Esta classe .chart-container 
+     é específica para o gráfico com fundo branco. */
+}
+
+/* --- Cabeçalho (Título e Controles) --- */
+/* Traduzido de: border-b border-gray-200 pb-2 mb-2 */
+.chart-header {
+  border-bottom: 1px solid #e5e7eb; /* border-b border-gray-200 */
+  padding-bottom: 0.5rem; /* pb-2 */
+  margin-bottom: 0.5rem; /* mb-2 */
+}
+
+/* Traduzido de: text-xl font-semibold text-gray-800 */
+.chart-header h2 {
+  font-size: 1.25rem; /* text-xl */
+  font-weight: 600; /* font-semibold */
+  color: #c2410c; /* text-gray-800 */
+}
+
+/* --- Controles (Onde estão todos os botões) --- */
+/* Traduzido de: flex justify-between items-center mt-2 */
+.chart-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.5rem; /* mt-2 */
+  
+  /* Para telas pequenas, empilhar os controles */
+  flex-direction: column;
+  gap: 0.75rem;
+  align-items: stretch; /* Faz os filhos ocuparem 100% da largura */
+}
+
+/* Em telas maiores, voltar a ficar lado a lado */
+@media (min-width: 768px) {
+  .chart-controls {
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+
+/* --- Lado Esquerdo dos Controles --- */
+/* Traduzido de: flex flex-row (e eu adicionei alinhamento) */
+.chart-controls-left {
+  display: flex;
+  flex-direction: column; /* Empilhado no mobile */
+  gap: 0.5rem;
+  align-items: flex-start;
+}
+@media (min-width: 768px) {
+  .chart-controls-left {
+    flex-direction: row; /* Lado a lado no desktop */
+    align-items: center;
+    gap: 1rem;
+  }
+}
+
+/* Traduzido de: flex gap-2 */
+.chart-sort-buttons {
+  display: flex;
+  gap: 0.5rem; /* gap-2 */
+}
+
+/* Traduzido de: text-sm text-gray-600 mb-1 */
+.chart-view-percent {
+  font-size: 0.875rem; /* text-sm */
+  color: #4b5563; /* text-gray-600 */
+}
+
+/* --- Lado Direito dos Controles --- */
+/* Traduzido de: flex flex-col items-end */
+.chart-controls-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Alinhado à esquerda no mobile */
+}
+@media (min-width: 768px) {
+  .chart-controls-right {
+    align-items: flex-end; /* Alinhado à direita no desktop */
+  }
+}
+
+/* Traduzido de: flex items-center gap-2 */
+.chart-zoom-buttons {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem; /* gap-2 */
+}
+
+
+/* --- Estilos Gerais dos Botões --- */
+
+/* Botões de Ordenar (Mais/Menos Relevantes) */
+.chart-button {
+  padding: 0.25rem 0.5rem; /* px-2 py-1 */
+  border-radius: 0.25rem; /* rounded */
+  font-size: 0.875rem; /* text-sm */
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+/* Estado padrão do botão */
+.chart-button.default-state {
+  background-color: #e5e7eb; /* bg-gray-200 */
+  color: #374151; /* text-gray-700 */
+}
+
+/* Estado ativo do botão */
+.chart-button.active-state {
+  background-color: #2563eb; /* bg-blue-600 */
+  color: #fff; /* text-white */
+  font-weight: 700; /* font-bold */
+}
+
+/* Botões de Zoom (+/-) */
+.chart-zoom-button {
+  padding: 0.25rem; /* px-1 py-1 */
+  width: 1.5rem;  /* Adicionado para tamanho consistente */
+  height: 1.5rem; /* Adicionado para tamanho consistente */
+  border-radius: 0.25rem; /* rounded */
+  font-size: 0.875rem; /* text-sm */
+  background-color: #e5e7eb; /* bg-gray-200 */
+  color: #374151; /* text-gray-700 */
+  border: 1px solid #e5e7eb; /* Borda padrão */
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Borda vermelha específica para o botão '-' */
+.chart-zoom-button.decrease-button {
+  border: 1px solid #fecaca; /* border border-red-200 */
+}
+
+/* Estado desabilitado */
+.chart-zoom-button:disabled {
+  opacity: 0.5; /* disabled:opacity-50 */
+  cursor: not-allowed;
+}

@@ -113,15 +113,53 @@ export default function Dashboard() {
     fetchSuspects();
   }, [monitoredIps]);
 
+  // const suspectsSet = new Set(suspectsIps);
+
+  // const chartData = Object.entries(ipInfoMap)
+  //   .filter(([ip, info]) => suspectsSet.has(ip)) 
+  //   .map(([ip, info]) => ({ // Mapeia apenas os suspeitos
+  //     ip: ip,
+  //     acessos: info.accessCount,
+  //   }));
+  const mockChartData = [];
+  for (let i = 1; i <= 50; i++) {
+    let acessos;
+    
+    // Gera picos "altos" deliberados
+    if (i % 8 === 0) { 
+      // Pico Alto
+      acessos = Math.floor(Math.random() * 150) + 250; // Valores entre 250-400
+    } 
+    // Gera picos "médios"
+    else if (i % 3 === 0) { 
+      // Pico Médio
+      acessos = Math.floor(Math.random() * 100) + 100; // Valores entre 100-200
+    } 
+    // Gera vales "baixos"
+    else { 
+      // Vale Baixo
+      acessos = Math.floor(Math.random() * 70) + 10;  // Valores entre 10-80
+    }
+
+    mockChartData.push({
+      // Gera um IP fictício. Usamos o range 198.51.100.x (reservado para documentação)
+      ip: `198.51.100.${i}`,
+      acessos: acessos,
+    });
+  }
+
+  // Use os dados de teste no lugar dos dados reais
+  const chartData = mockChartData;
+  
   return (
     <div className="dashboard">
       <header>
         <h1>IP QUERY</h1>
-        <nav>
+        {/* <nav>
           <a href="#">Home</a>
           <a href="#">Teste</a>
           <a href="#">Teste</a>
-        </nav>
+        </nav> */}
         <Menu className="menu-icon" />
       </header>
 
@@ -166,9 +204,10 @@ export default function Dashboard() {
                 ipInfoMap={ipInfoMap} 
               />
             </div>
+
           </div>
 
-          {/* <Chart /> */}
+          <Chart data={chartData} />
         </section>
 
         <aside className="w-80 flex flex-col flex-shrink-0 space-y-4">

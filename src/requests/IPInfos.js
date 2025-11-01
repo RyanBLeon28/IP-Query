@@ -1,7 +1,9 @@
 
+const API_KEY = import.meta.env.VITE_IPINFO_API_KEY;
+
 // Função assíncrona para consultar informações do IP
 export async function IPInfo(ip) {
-  const apiKey = 'fa198529ce9c6a'; 
+  const apiKey = API_KEY; 
   const url = `https://ipinfo.io/${ip}/json?token=${apiKey}`;
 
   try {

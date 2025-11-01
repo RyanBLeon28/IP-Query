@@ -1,11 +1,10 @@
 /**
+ * Utiliza a ip-api para buscar a localizacao dos IPs
  * Busca informações de um IP ou domínio usando a API gratuita ip-api.com.
  * @param {string} query - O endereço de IP ou o nome de domínio a ser consultado.
  * @returns {Promise<object|null>} Um objeto com as informações ou null em caso de erro.
  */
 export async function getIpInfo(query) {
-  // A URL da API. O campo 'fields' é opcional, mas ajuda a pedir só os dados que você precisa.
-  // Removi 'fields' para este exemplo para obter todos os dados disponíveis.
   const url = `http://ip-api.com/json/${query}`;
 
   // console.log(`Consultando a API para: ${query}...`);

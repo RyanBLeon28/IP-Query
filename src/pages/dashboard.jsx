@@ -8,6 +8,7 @@ import Chart from "../components/Chart";
 
 import {checkIp } from "../requests/AbuseIPsCheck"
 import { getIpInfo } from "../requests/GetIPInfo";
+import { checkIpList } from "../requests/CheckIPList";
 
 export default function Dashboard() {
   const fileInputRef = useRef(null);
@@ -33,6 +34,7 @@ export default function Dashboard() {
 
     for (const ip of monitoredIps) {
       if (!newIpInfoMap[ip]) { 
+        // * Utiliza a ip-api para buscar a localizacao dos IPs
         const info = await getIpInfo(ip);
         if (info?.country) {
           newIpInfoMap[ip] = { country: info.country, accessCount: 1 };
@@ -83,7 +85,6 @@ export default function Dashboard() {
     reader.onload = (e) => {
       const content = e.target.result;
       const ips = content.split('\n').map(ip => ip.trim()).filter(ip => ip !== "");
-      // Aqui o estado 'monitoredIps' é atualizado com a nova lista.
       setMonitoredIps(ips);
     };
     reader.readAsText(file);
@@ -92,18 +93,18 @@ export default function Dashboard() {
   // -------------- Suspects IPs verification --------------
     useEffect(() => {
     const fetchSuspects = async () => {
-      if (monitoredIps.length === 0) return;
-
-      setLoadingSuspects(true);
-      const results = [];
-      for (const ip of monitoredIps) {
-        const result = await checkIp(ip);
-        results.push(result);
+      if (monitoredIps.length === 0) {
+        setSuspectsIps([]);
+        return;
       }
 
-      // Filtra apenas IPs com score alto
+      setLoadingSuspects(true);
+
+      const results = await checkIpList(monitoredIps);
+
+      // console.log("Resultado da lista: ",results)
       const suspects = results
-        .filter(r => r.score >= 80)
+        .filter(r => r.score >= 80) // 'score' agora é o 'finalScore'
         .map(r => r.ip);
 
       setSuspectsIps([...new Set(suspects)]);
@@ -114,44 +115,35 @@ export default function Dashboard() {
   }, [monitoredIps]);
 
   // ----------- Real Suspect data ----------- 
-  // const suspectsSet = new Set(suspectsIps);
+  const suspectsSet = new Set(suspectsIps);
 
-  // const chartData = Object.entries(ipInfoMap)
-  //   .filter(([ip, info]) => suspectsSet.has(ip)) 
-  //   .map(([ip, info]) => ({ // Mapeia apenas os suspeitos
-  //     ip: ip,
-  //     acessos: info.accessCount,
-  //   }));
+  const chartData = Object.entries(ipInfoMap)
+    .filter(([ip, info]) => suspectsSet.has(ip)) 
+    .map(([ip, info]) => ({ // Mapeia apenas os suspeitos
+      ip: ip,
+      acessos: info.accessCount,
+    }));
   // --------------------------------------------
-  const mockChartData = [];
-  for (let i = 1; i <= 50; i++) {
-    let acessos;
+  // const mockChartData = [];
+  // for (let i = 1; i <= 50; i++) {
+  //   let acessos;
     
-    // Gera picos "altos" deliberados
-    if (i % 8 === 0) { 
-      // Pico Alto
-      acessos = Math.floor(Math.random() * 150) + 250; // Valores entre 250-400
-    } 
-    // Gera picos "médios"
-    else if (i % 3 === 0) { 
-      // Pico Médio
-      acessos = Math.floor(Math.random() * 100) + 100; // Valores entre 100-200
-    } 
-    // Gera vales "baixos"
-    else { 
-      // Vale Baixo
-      acessos = Math.floor(Math.random() * 70) + 10;  // Valores entre 10-80
-    }
+  //   if (i % 8 === 0) { 
+  //     acessos = Math.floor(Math.random() * 150) + 250; // Valores entre 250-400
+  //   } 
+  //   else if (i % 3 === 0) { 
+  //     acessos = Math.floor(Math.random() * 100) + 100; // Valores entre 100-200
+  //   } 
+  //   else { 
+  //     acessos = Math.floor(Math.random() * 70) + 10;  // Valores entre 10-80
+  //   }
 
-    mockChartData.push({
-      // Gera um IP fictício. Usamos o range 198.51.100.x (reservado para documentação)
-      ip: `198.51.100.${i}`,
-      acessos: acessos,
-    });
-  }
-
-  // Use os dados de teste no lugar dos dados reais
-  const chartData = mockChartData;
+  //   mockChartData.push({
+  //     ip: `198.51.100.${i}`,
+  //     acessos: acessos,
+  //   });
+  // }
+  // const chartData = mockChartData;
 
   // --------------------------------------------
 
@@ -240,7 +232,6 @@ export default function Dashboard() {
             </div>
 
             <div className="fileName">
-              {/* Nome do arquivo e botão remover */}
               {fileName && (
                 <div className="file-info" style={{ marginTop: "0.5rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>
                   <span>{fileName}</span>

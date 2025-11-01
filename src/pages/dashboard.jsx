@@ -113,6 +113,7 @@ export default function Dashboard() {
     fetchSuspects();
   }, [monitoredIps]);
 
+  // ----------- Real Suspect data ----------- 
   // const suspectsSet = new Set(suspectsIps);
 
   // const chartData = Object.entries(ipInfoMap)
@@ -121,6 +122,7 @@ export default function Dashboard() {
   //     ip: ip,
   //     acessos: info.accessCount,
   //   }));
+  // --------------------------------------------
   const mockChartData = [];
   for (let i = 1; i <= 50; i++) {
     let acessos;
@@ -150,6 +152,9 @@ export default function Dashboard() {
 
   // Use os dados de teste no lugar dos dados reais
   const chartData = mockChartData;
+
+  // --------------------------------------------
+
   
   return (
     <div className="dashboard">
@@ -164,7 +169,7 @@ export default function Dashboard() {
       </header>
 
       <main>
-        <section className="flex gap-4 p-4">
+        <section className="flex flex-col gap-4 p-4 w-full">
 
           <div className="map-container">
             <div className="map-header">

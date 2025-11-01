@@ -88,15 +88,6 @@ aside {
   }
 }
 
-/* Right column */
-section {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  flex: 1; /* ocupa o restante do espaço */
-  width: 100%;
-}
-
 /* Blocos de IP */
 .block {
   background-color: #ea580c;
@@ -153,16 +144,16 @@ section {
   font-size: 0.875rem;
 }
 
-.map-container{
+/* .map-container{
   margin-top: 3%;
-}
+} */
 
-.map-header {
+/* .map-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-}
+} */
 
 .filters {
   display: flex;
@@ -251,9 +242,6 @@ section {
   color: #ea580c;
 }
 
-.flex {
-  display: flex;
-}
 
 .gap-2 { gap: 0.5rem; }
 .gap-4 { gap: 1rem; }

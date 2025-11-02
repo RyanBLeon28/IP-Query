@@ -7,7 +7,7 @@ export async function checkIpList(ipArray) {
     const res = await axios.post(`${API_URL}/check-ip-list`, {
       ips: ipArray 
     });
-    console.log("Resultado da lista:dsds",res.data)
+    // console.log("Resultado da lista:",res.data)
     return res.data.map(result => ({
       ip: result.ip,
       score: result.finalScore

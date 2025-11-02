@@ -1,9 +1,24 @@
-import React, {useState} from "react";
+import React, {useState, useMemo} from "react";
 import "./SuspectList.css"
+import countriesData from "../assets/countries.json"
 
 export default function SuspectsList({ monitoredIps = [], suspectsIps = [], ipInfoMap = {}, loading }) {
   const [sortField, setSortField] = useState("acessos"); 
   const [sortOrder, setSortOrder] = useState("desc"); 
+  
+  const countryCodeToNameMap = useMemo(() => {
+    const map = {};
+    countriesData.features.forEach(feature => {
+      const code = feature.properties["ISO3166-1-Alpha-2"]; 
+      const name = feature.properties.name;
+      if (code && name) {
+        map[code] = name;
+      }
+    });
+    map["US"] = "United States of America";
+    map["FR"] = "France";
+    return map;
+  }, []);
 
   const handleSort = (field) => {
     if (sortField === field) {
@@ -59,11 +74,16 @@ export default function SuspectsList({ monitoredIps = [], suspectsIps = [], ipIn
             <tbody>
               {sortedIps.map((ip, index) => {
                 const info = ipInfoMap[ip] || {};
+
+                const countryName = countryCodeToNameMap[info.country] || "País desconhecido";
+
                 return (
                   <tr key={index}>
                     <td>{ip}</td>
                     <td>{info.accessCount || 1}</td>
-                    <td>{info.country || "Desconhecido"}</td>
+                    <td title={countryName}>
+                      {info.country || "Desconhecido"}
+                    </td>
                   </tr>
                 );
               })}

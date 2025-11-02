@@ -6,7 +6,6 @@ import ClientIPInput from "../components/ClientIPInput";
 import SuspectsList from "../components/SuspectList";
 import Chart from "../components/Chart";
 
-import {checkIp } from "../requests/AbuseIPsCheck"
 import { getIpInfo } from "../requests/GetIPInfo";
 import { checkIpList } from "../requests/CheckIPList";
 
@@ -22,7 +21,7 @@ export default function Dashboard() {
 
   // Função que será chamada pelo IpInput quando uma localização for encontrada
   const handleLocationFound = (coords) => {
-    // coords será um array como [40.7128, -74.0060]
+    // coords será um array como [40.7xx128, -74.0060]
     setMarkerPosition(coords);
   };
 
@@ -30,24 +29,36 @@ export default function Dashboard() {
   // -------------- Filter IP for map --------------
   useEffect(() => {
   const fetchData = async () => {
-    const newIpInfoMap = { ...ipInfoMap }; 
+    if (monitoredIps.length === 0) {
+      setIpInfoMap({}); // Limpa o mapa
+      return;
+    }
+    
+    const infoList = await getIpInfo(monitoredIps); // Renomeie para getIpInfoList
 
-    for (const ip of monitoredIps) {
-      if (!newIpInfoMap[ip]) { 
-        // * Utiliza a ip-api para buscar a localizacao dos IPs
-        const info = await getIpInfo(ip);
-        if (info?.country) {
-          newIpInfoMap[ip] = { country: info.country, accessCount: 1 };
+    const newIpInfoMap = {};
+    
+    for (const info of infoList) {
+      if (info && info.country) { 
+        
+        const ipOriginalDaLista = info.query; 
+        
+        if (!newIpInfoMap[ipOriginalDaLista]) {
+          newIpInfoMap[ipOriginalDaLista] = { 
+            ...info, // Copia todos os dados (city, loc, region, country...)
+            accessCount: 1 
+          };
+
+        } else {
+          newIpInfoMap[ipOriginalDaLista].accessCount += 1;
         }
-      } else {
-        newIpInfoMap[ip].accessCount += 1;
       }
     }
 
     setIpInfoMap(newIpInfoMap);
   };
 
-  if (monitoredIps?.length) fetchData();
+  fetchData();
 }, [monitoredIps]);
 
   const handleClick = () => {

@@ -3,11 +3,11 @@ import { MapContainer, TileLayer, GeoJSON, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import countriesData from "../assets/countries.json";
-import { getIpInfo } from "../requests/GetIPInfo";
 
 import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
 import markerIcon from 'leaflet/dist/images/marker-icon.png';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
+
 delete L.Icon.Default.prototype._getIconUrl;
 
 L.Icon.Default.mergeOptions({
@@ -18,37 +18,52 @@ L.Icon.Default.mergeOptions({
 
 export default function WorldMap({ markerPosition, monitoredIps, suspectsIps, filter, ipInfoMap}) {
   const [countryAccess, setCountryAccess] = React.useState({});
+  
+  const countryCodeToNameMap = React.useMemo(() => {
+    const map = {};
+    countriesData.features.forEach(feature => {
+      const code = feature.properties["ISO3166-1-Alpha-2"]; 
+      const name = feature.properties.name;
+      if (code && name) {
+        map[code] = name;
+      }
+    });
+    map["US"] = "United States of America";
+    map["FR"] = "France";
+    return map;
+  }, []);
+  
+  const filteredIps = React.useMemo(() => {
+    if (filter === "Todos") {
+      return Object.keys(ipInfoMap); 
+    } else if (filter === "Suspeitos") {
+      return Array.from(new Set(suspectsIps));
+    } else if (filter === "Saudaveis") {
+      return Object.keys(ipInfoMap).filter((ip) => !suspectsIps.includes(ip));
+    }
+    return [];
+  }, [filter, monitoredIps, ipInfoMap, suspectsIps]);
 
   React.useEffect(() => {
-    if (!ipInfoMap || !Object.keys(ipInfoMap).length) return;
-
-    let filteredIps = [];
-
-    if (filter === "Todos") {
-      filteredIps = Object.keys(ipInfoMap); // todos únicos
-    } else if (filter === "Suspeitos") {
-      filteredIps = Array.from(new Set(suspectsIps));
-    } else if (filter === "Saudaveis") {
-      filteredIps = Object.keys(ipInfoMap).filter((ip) => !suspectsIps.includes(ip));
-    }
-
-    // For normalize countries names
     const normalizeCountry = {
       "United States": "United States of America"
     };
 
     const accessPerCountry = {};
     for (const ip of filteredIps) {
+      
       const info = ipInfoMap[ip];
       if (info?.country) {
-        const normalizedName = normalizeCountry[info.country] || info.country;
-        accessPerCountry[normalizedName] =
-          (accessPerCountry[normalizedName] || 0) + (info.accessCount || 1);
+        const countryName = countryCodeToNameMap[info.country];
+
+        if (countryName) {
+          accessPerCountry[countryName] =
+            (accessPerCountry[countryName] || 0) + (info.accessCount || 1);
+        }
       }
     }
-
     setCountryAccess(accessPerCountry);
-  }, [filter, monitoredIps, suspectsIps, ipInfoMap]);
+  }, [filteredIps, ipInfoMap, countryCodeToNameMap]);
 
   const values = Object.values(countryAccess);
   const minAccess = Math.min(...values, 0);
@@ -96,7 +111,6 @@ export default function WorldMap({ markerPosition, monitoredIps, suspectsIps, fi
       <GeoJSON
         key={JSON.stringify(countryAccess)}
         data={countriesData}
-        //style={countryStyle}
         onEachFeature={onEachCountry}
       />
       {markerPosition && (

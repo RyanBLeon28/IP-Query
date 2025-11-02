@@ -4,31 +4,21 @@
  * @param {string} query - O endereço de IP ou o nome de domínio a ser consultado.
  * @returns {Promise<object|null>} Um objeto com as informações ou null em caso de erro.
  */
-export async function getIpInfo(query) {
-  const url = `https://ip-api.com/json/${query}`;
+import axios from "axios";
 
-  // console.log(`Consultando a API para: ${query}...`);
+const API_URL = import.meta.env.VITE_API_BASE_URL;
 
+export async function getIpInfo(ipArray) {
   try {
-    const response = await fetch(url);
-
-    // Verifica se a requisição de rede foi bem-sucedida (ex: status 200)
-    if (!response.ok) {
-      throw new Error(`Erro de rede: ${response.status} - ${response.statusText}`);
-    }
-
-    const data = await response.json();
-
-    // A API ip-api.com retorna um campo 'status'. Se for 'fail', a consulta não teve sucesso.
-    if (data.status === 'fail') {
-      throw new Error(`Erro da API: ${data.message}`);
-    }
-
-    // Se tudo deu certo, retorna os dados
-    return data;
+    const response = await axios.post(`${API_URL}/get-ip-info-list`, {
+      ips: ipArray
+    });
+    
+  // console.log("RESULTADO no frontend IPinfo: ",response.data)
+    return response.data;
 
   } catch (error) {
-    console.error(`Ocorreu um erro ao buscar informações para "${query}":`, error.message);
-    return null; // Retorna nulo para indicar que houve uma falha
+    console.error('Ocorreu um erro ao buscar lista de IPInfo:', error);
+    return []; 
   }
 }

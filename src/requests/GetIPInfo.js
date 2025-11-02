@@ -5,7 +5,7 @@
  * @returns {Promise<object|null>} Um objeto com as informações ou null em caso de erro.
  */
 export async function getIpInfo(query) {
-  const url = `http://ip-api.com/json/${query}`;
+  const url = `https://ip-api.com/json/${query}`;
 
   // console.log(`Consultando a API para: ${query}...`);
 

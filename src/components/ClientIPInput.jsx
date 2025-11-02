@@ -1,9 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Search } from "lucide-react";
 import "./clientIPInput.css";
-import { IPInfo } from "../requests/IPInfos";
-import { checkDomainStatus } from "../requests/IPStatus";
-import { getIpInfo } from "../requests/GetIPInfo";
+import { getSingleQueryGeo } from "../requests/GetIPInfo";
 
 export default function ClientIPInput({onLocationFound}) {
 
@@ -21,8 +19,8 @@ export default function ClientIPInput({onLocationFound}) {
   const handleBlur = () => setSubmitted(true);
 
   useEffect(() => {
-    const fetchData = async (value) => {
-      const domainInfo = await getIpInfo(value);
+    const fetchData = async (query) => {
+      const domainInfo = await getSingleQueryGeo(query);
 
       if (domainInfo) {
         console.log("\n--- Informações para o domínio ---");

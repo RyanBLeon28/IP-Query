@@ -22,3 +22,14 @@ export async function getIpInfo(ipArray) {
     return []; 
   }
 }
+
+export async function getSingleQueryGeo(query) {
+  try {
+    // Chama a nova rota GET
+    const response = await axios.get(`${API_URL}/get-geo-for-query/${query}`);
+    return response.data; // Retorna o objeto de resultado único
+  } catch (error) {
+    console.error(`Ocorreu um erro ao buscar query única "${query}":`, error);
+    return null;
+  }
+}

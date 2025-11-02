@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Search } from "lucide-react";
 import "./clientIPInput.css";
-import { getSingleQueryGeo } from "../requests/GetIPInfo";
+import { getSingleQueryGeo, getIpInfo } from "../requests/GetIPInfo";
 
 export default function ClientIPInput({onLocationFound}) {
 
@@ -20,31 +20,41 @@ export default function ClientIPInput({onLocationFound}) {
 
   useEffect(() => {
     const fetchData = async (query) => {
-      const domainInfo = await getSingleQueryGeo(query);
+      const infoList = await getIpInfo([query]);
+      const domainInfo = infoList[0];
 
-      if (domainInfo) {
+      if (domainInfo && domainInfo.country) {
         console.log("\n--- Informações para o domínio ---");
         console.log(`País: ${domainInfo.country}`);
         console.log(`Cidade: ${domainInfo.city}`);
-        console.log(`Organização (ISP): ${domainInfo.isp}`);
-        console.log(`Endereço de IP resolvido: ${domainInfo.query}`); // 'query' retorna o IP que a API encontrou
-        // console.log("Dados completos:", domainInfo); // Descomente para ver todos os dados
+        console.log(`Organização (ISP): ${domainInfo.org}`); 
+        console.log(`Endereço de IP resolvido: ${domainInfo.ip}`); 
         
-        if (domainInfo.lat && domainInfo.lon) {
-          onLocationFound([domainInfo.lat, domainInfo.lon]);
+        if (domainInfo.loc) {
+          const [lat, lon] = domainInfo.loc.split(',').map(Number);
+          onLocationFound([lat, lon]);
         }
+      } else {
+        console.error("Falha ao buscar geolocalização:", domainInfo?.message || "Resposta inválida");
       }
+      
+      setSubmitted(false);
     }
 
     if (submitted && value) {
       const isIP = /^(\d{1,3}\.){3}\d{1,3}$/.test(value);
       console.log("Consultando:", value, isIP ? "(IP)" : "(DNS)");
       
-      fetchData(value);
-      setSubmitted(false);
+      if (isIP) {
+        fetchData(value); 
+      } else {
+        console.log("Busca por DNS não implementada.");
+        fetchData(value);
+        setSubmitted(false);
+      }
     }
 
-  }, [submitted, value]);
+  }, [submitted, value, onLocationFound]);
 
   return (
     <div className="clientDiv">

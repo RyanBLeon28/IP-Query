@@ -2,7 +2,6 @@ export async function checkDomainStatus(domain) {
   const dnsUrl = `https://cloudflare-dns.com/dns-query?name=${domain}&type=A`;
 
   try {
-    // Passo 1: Verificar a resolução de DNS
     const dnsResponse = await fetch(dnsUrl, {
       headers: { 'accept': 'application/dns-json' }
     });
@@ -18,10 +17,8 @@ export async function checkDomainStatus(domain) {
       };
     }
 
-    // Passo 2: Tentar acessar o domínio via HTTPS
-    // Usamos 'https://' para garantir que a requisição seja segura
     const webResponse = await fetch(`https://${domain}`, {
-        method: 'HEAD' // Usamos HEAD para obter apenas o cabeçalho, mais rápido
+        method: 'HEAD'
     });
 
     const isOnline = webResponse.ok;
@@ -34,7 +31,6 @@ export async function checkDomainStatus(domain) {
     };
 
   } catch (error) {
-    // Se a requisição falhar (domínio não existe, erro de CORS, etc.)
     console.error('Ocorreu um erro ao verificar o domínio:', error.message);
     return {
       is_active: false,

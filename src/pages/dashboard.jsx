@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from "react";
-import { Menu, Folder, BarChart3, Globe2 } from "lucide-react";
+import { Menu, Folder } from "lucide-react";
 import "./dashboard.css";
 import WorldMap from "../components/WorldMap";
 import ClientIPInput from "../components/ClientIPInput";
@@ -19,7 +19,6 @@ export default function Dashboard() {
   const [markerPosition, setMarkerPosition] = useState(null);
   const [filter, setFilter] = useState("Todos");
 
-  // Função que será chamada pelo IpInput quando uma localização for encontrada
   const handleLocationFound = (coords) => {
     // coords será um array como [40.7xx128, -74.0060]
     setMarkerPosition(coords);
@@ -30,11 +29,11 @@ export default function Dashboard() {
   useEffect(() => {
   const fetchData = async () => {
     if (monitoredIps.length === 0) {
-      setIpInfoMap({}); // Limpa o mapa
+      setIpInfoMap({}); 
       return;
     }
     
-    const infoList = await getIpInfo(monitoredIps); // Renomeie para getIpInfoList
+    const infoList = await getIpInfo(monitoredIps);
 
     const newIpInfoMap = {};
     
@@ -135,6 +134,7 @@ export default function Dashboard() {
       acessos: info.accessCount,
     }));
   // --------------------------------------------
+  // Gerar 50 dados para plotar no grafico
   // const mockChartData = [];
   // for (let i = 1; i <= 50; i++) {
   //   let acessos;
@@ -163,11 +163,6 @@ export default function Dashboard() {
     <div className="dashboard">
       <header>
         <h1>IP QUERY</h1>
-        {/* <nav>
-          <a href="#">Home</a>
-          <a href="#">Teste</a>
-          <a href="#">Teste</a>
-        </nav> */}
         <Menu className="menu-icon" />
       </header>
 
@@ -177,6 +172,7 @@ export default function Dashboard() {
             <div className="map-header">
               <h2>Posição geográfica dos acessos</h2>
               
+              {/* Filtro de IPs do mapa */}
               <div className="filters">
                 <button
                   className={filter === "Todos" ? "bg-gray-200" : "bg-gray-100"}
@@ -203,6 +199,7 @@ export default function Dashboard() {
             </div>
 
             <div className="icon-center">
+              {/* Mapa com cores para sinalizar países com mais acessos */}
               <WorldMap 
                 markerPosition={markerPosition}
                 monitoredIps={monitoredIps}
@@ -214,15 +211,18 @@ export default function Dashboard() {
 
           </div>
 
+          {/* Grafico para visualização dos dados */}
           <Chart data={chartData} />
         </section>
 
         <aside>
+          {/* Seção de input para encontrar um IP ou DNS no mapa*/}
           <ClientIPInput 
             onLocationFound={handleLocationFound}
             className="self-end w-full max-w-sm"
           />
           
+          {/* Seção para adicionar arquivo com lista de IPs */}
           <div className="list-container">
             <div className="header-list">
               <h2>IPs Monitorados:</h2>
@@ -282,6 +282,7 @@ export default function Dashboard() {
             </ul>
           </div>
 
+          {/* Lista de IPs detectados como suspeitos */}
           <SuspectsList 
             monitoredIps={monitoredIps}
             suspectsIps={suspectsIps}

@@ -1,12 +1,35 @@
-# React + Vite
+# IP Query
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+---
 
-Currently, two official plugins are available:
+Este é o frontend (dashboard) do IP Query, uma Single Page Application (SPA) construída em React com Vite. Esta interface permite ao usuário visualizar a origem e a reputação de endereços IP que acessaram um serviço.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+O sistema consome uma API de backend própria (hospedada no Render), que por sua vez agrega dados de múltiplas fontes de inteligência de ameaças (Threat Intelligence), incluindo AbuseIPDB, VirusTotal e ipinfo.io.
 
-## Expanding the ESLint configuration
+Importância do Trabalho: Em um cenário de cibersegurança com ameaças crescentes, este painel fornece uma visão clara e imediata sobre potenciais riscos. Ele traduz dados de segurança brutos em visualizações intuitivas, permitindo que um analista ou administrador de sistema identifique rapidamente padrões de ataque, como países de origem frequentes (através do mapa de calor) ou IPs específicos com má reputação (através da lista de IPs abusivos).
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Funcionalidades:
+
+- Upload de arquivos .txt contendo listas de IPs/domínios.
+
+- Barra de pesquisa para consulta individual de IPs ou domínios.
+
+- Mapa de Calor: Um mapa interativo que colore os países com base na densidade de acessos.
+
+- Lista de Ameaças: Tabelas filtráveis que mostram quais IPs são considerados suspeitos com base no score agregado do backend.
+
+- Visualização Gráfica: Gráficos que mostram a distribuição de acessos.
+
+---
+
+## Acesse a aplicação em:
+https://ip-query-taupe.vercel.app/
+
+
+---
+
+## Instalar dependências
+npm install
+
+## Rodar a aplicação
+npm start

@@ -7,7 +7,6 @@ export async function IPInfo(ip) {
   const url = `https://ipinfo.io/${ip}/json?token=${apiKey}`;
 
   try {
-    // Faz a requisição à API
     const response = await fetch(url);
 
     if (!response.ok) {

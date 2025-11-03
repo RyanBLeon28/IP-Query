@@ -48,6 +48,12 @@ export default function SuspectsList({ monitoredIps = [], suspectsIps = [], ipIn
     return 0;
   });
 
+
+  const totalAccesses = uniqueIps.reduce(
+    (sum, ip) => sum + (ipInfoMap[ip]?.accessCount || 0),
+    0
+  );
+
   return (
     <div className="list-container">
       <div className="header-suspects">
@@ -64,7 +70,7 @@ export default function SuspectsList({ monitoredIps = [], suspectsIps = [], ipIn
               <tr>
                 <th>IP</th>
                 <th onClick={() => handleSort("acessos")} style={{ cursor: "pointer" }}>
-                  Acessos {sortField === "acessos" ? (sortOrder === "asc" ? "▲" : "▼") : ""}
+                  Acessos {sortField === "acessos" ? (sortOrder === "asc" ? "▲" : "▼") : ""} Total:{totalAccesses}
                 </th>
                 <th onClick={() => handleSort("pais")} style={{ cursor: "pointer" }}>
                   País {sortField === "pais" ? (sortOrder === "asc" ? "▲" : "▼") : ""}

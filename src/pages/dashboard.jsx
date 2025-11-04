@@ -125,36 +125,36 @@ export default function Dashboard() {
   }, [monitoredIps]);
 
   // ----------- Real Suspect data ----------- 
-  // const suspectsSet = new Set(suspectsIps);
+  const suspectsSet = new Set(suspectsIps);
 
-  // const chartData = Object.entries(ipInfoMap)
-  //   .filter(([ip, info]) => suspectsSet.has(ip)) 
-  //   .map(([ip, info]) => ({ // Mapeia apenas os suspeitos
-  //     ip: ip,
-  //     acessos: info.accessCount,
-  //   }));
+  const chartData = Object.entries(ipInfoMap)
+    .filter(([ip, info]) => suspectsSet.has(ip)) 
+    .map(([ip, info]) => ({ // Mapeia apenas os suspeitos
+      ip: ip,
+      acessos: info.accessCount,
+    }));
   // --------------------------------------------
   // ------- Gerar 50 dados para plotar no grafico -------
-  const mockChartData = [];
-  for (let i = 1; i <= 50; i++) {
-    let acessos;
+  // const mockChartData = [];
+  // for (let i = 1; i <= 50; i++) {
+  //   let acessos;
     
-    if (i % 8 === 0) { 
-      acessos = Math.floor(Math.random() * 150) + 250; // Valores entre 250-400
-    } 
-    else if (i % 3 === 0) { 
-      acessos = Math.floor(Math.random() * 100) + 100; // Valores entre 100-200
-    } 
-    else { 
-      acessos = Math.floor(Math.random() * 70) + 10;  // Valores entre 10-80
-    }
+  //   if (i % 8 === 0) { 
+  //     acessos = Math.floor(Math.random() * 150) + 250; // Valores entre 250-400
+  //   } 
+  //   else if (i % 3 === 0) { 
+  //     acessos = Math.floor(Math.random() * 100) + 100; // Valores entre 100-200
+  //   } 
+  //   else { 
+  //     acessos = Math.floor(Math.random() * 70) + 10;  // Valores entre 10-80
+  //   }
 
-    mockChartData.push({
-      ip: `198.51.100.${i}`,
-      acessos: acessos,
-    });
-  }
-  const chartData = mockChartData;
+  //   mockChartData.push({
+  //     ip: `198.51.100.${i}`,
+  //     acessos: acessos,
+  //   });
+  // }
+  // const chartData = mockChartData;
 
   // --------------------------------------------
 

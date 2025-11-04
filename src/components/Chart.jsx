@@ -22,7 +22,7 @@ const MAX_PERCENT = 100;
 const STEP_PERCENT = 10;
 
 const Chart = ({ data }) => {
-  const [sortOrder, setSortOrder] = useState(SORT_TYPES.DESC);
+  const [sortOrder, setSortOrder] = useState(SORT_TYPES.NONE);
   const [porcentView, setPorcentView] = useState(MAX_PERCENT);
 
   const sortedData = useMemo(() => {
@@ -65,6 +65,12 @@ const Chart = ({ data }) => {
         
         <div className="chart-controls-left">
           <div className="chart-sort-buttons">
+            <button 
+              onClick={() => setSortOrder(SORT_TYPES.NONE)}
+              className={`chart-button ${sortOrder === SORT_TYPES.NONE ? 'active-state' : 'default-state'}`}
+            >
+              Padrão
+            </button>
             <button 
               onClick={() => setSortOrder(SORT_TYPES.DESC)}
               className={`chart-button ${sortOrder === SORT_TYPES.DESC ? 'active-state' : 'default-state'}`}
